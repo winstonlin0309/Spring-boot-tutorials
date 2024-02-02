@@ -95,7 +95,48 @@ EntityManager: 是JPA库中的一个类，用这个可以和数据库进行交�
 			- entityManager.createQuery(<Query语法>, <Entity class>)
 			- 需要注意的数， Query语法里面的变量名是JPA中的 而不是DB中的。
 			- Ex.			
-				theQuery = entityManager.createQuery("FROM Student Where lastName='Doe'", student.class)
-				这里的Student 和lastName就是JPA中的，              
+				TypedQuery<Student> theQuery =  entityManager.createQuery("FROM Student Where lastName='Doe'", student.class)
+				这里的Student 和lastName就是JPA中的变量名
+			- Ex.
+				TypedQuery<Student> theQuery =  entityManager.createQuery("FROM Student Where lastName='Doe" OR firstName = 'Daffy'", Student.class);
+				选中lastName是Doe 或者 firstName是 Daffy的所有学生。 返回的数据类型为Student
+			- Ex.
+				TypedQuery<Student> theQuery = entityManager.createQuery("FROM Student WHERE email LIKE '%luv2code.com', Student.class")
+				选中所有email结尾是 lux2code.ocom的学生
 
-			 
+		- 添加variable到query里面
+			- TypedQuery<Student> theQuery = entityManager.createQuery("FROM Student WHRE lastName = :theData", Student.class)
+				theQuery.setParameter("theData", "test1");
+			- 在查询中，我们添加了一个冒号在theData前面， 这就意味着 theData被我们设置成了一个变量名， 这样运行后期在填资料
+	U:
+		- entityManager.merge(<data>)	
+		- 默认return type 是void， 但是可以查看有多少个row被update
+			int num_of_updates = entityManager.merge(<data>)	
+	D:
+		- entityManager.remove(<data>)
+		- 默认return type 是void， 但是可以查看有多少个row被delete
+			int num_of_removes = entityManager.remove(<data>)	
+		- entityManager.createQuery("DELETE FROM Student").executeUpdate();
+			这个就是删除整个表格的东西， 注意， 他需要用到executeUpdate()
+
+ 
+## REST API篇
+ 
+# @RestController  
+    - 用在class上， 这个意思就是该class是控制rest的 api接口
+# @RequestMapping("<path>")   
+    - 用在class上， 初始接口， 
+    - Ex.
+        @RequestMapping("api")      这样后面的所有request/response的路径前面都要加一个 api/<路径>
+# @GetMapping("<path>")
+    - 当用户试图访问这个网站的时候， 需要给他return什么资料
+    - 可以自定义path variable， 用到path variable的时候， 在declare function parameter的时候，前面要加一个 @PathVariable <declaration of variable>, 并且两个variable必须一样名字
+        - Ex.
+            @GetMapping("/students/{studentId}")   这样我可以可以访问 /api/students/0  /api/students/1 ...等
+            public Student getStudent(@PathVariable int studentId)
+# @PostConstruct
+	- 在Bean初始化后执行的初始化逻辑
+	- 只会执行一次
+	- 在constructor之后执行
+# @ControllerAdvice
+	- 这个可以设置global exception， 通常异常只能在对应的@RestController里面生效， 但是global exception就可以运输全局
