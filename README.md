@@ -1,4 +1,12 @@
 # Spring-boot-tutorials
+
+# 什么是Bean
+- bean是有IoC容量管理的java对象
+- IoC是用来管理所有Java对象的实例化和初始化， 控制对象与对象之间的依赖关系
+- 他和new 创建的Java对象没有任何区别s
+- bean是map集合
+- beanDefinition： 我在配置文件（xml）中配置好我需要的类的信息（我需要什么对象）， 把这个信息交给IoC容器（告诉IoC我要的对象）， 让IoC放回给我
+
 # 更改spring boot 读取的目录
 @SpringBootApplication
 public class SpringcoredemoApplication {
