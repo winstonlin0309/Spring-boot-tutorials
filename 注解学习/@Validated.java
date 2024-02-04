@@ -47,5 +47,8 @@ public class User {
     @Email
     private String email;
 
+    @Min(0)
+    @Max(100)
+    private int age
     // 其他字段和方法...
 }
